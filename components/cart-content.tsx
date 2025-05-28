@@ -1,8 +1,10 @@
 "use client"
 
+import type React from "react"
+
 import { useCart } from "@/hooks/use-cart"
 import { Button } from "@/components/ui/button"
-import { Trash2, Plus, Minus, ShoppingBag, Clock, MapPin, Info } from "lucide-react"
+import { Trash2, Plus, Minus, ShoppingBag, Clock, MapPin, Info, CreditCard } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
@@ -11,6 +13,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Input } from "@/components/ui/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
 
 export default function CartContent() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCart()
@@ -19,15 +24,137 @@ export default function CartContent() {
   const [pickupLocation, setPickupLocation] = useState("lima")
   const [pickupDate, setPickupDate] = useState("today")
   const [pickupTime, setPickupTime] = useState("18:00")
+  // Card details state
+  const [cardNumber, setCardNumber] = useState("")
+  const [cardName, setCardName] = useState("")
+  const [cardExpiry, setCardExpiry] = useState("")
+  const [cardCvv, setCardCvv] = useState("")
+
+  // Form validation state
+  const [errors, setErrors] = useState({
+    cardNumber: "",
+    cardName: "",
+    cardExpiry: "",
+    cardCvv: "",
+  })
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, "")
+    // Format with spaces every 4 digits
+    const formatted = value.replace(/(\d{4})(?=\d)/g, "$1 ").trim()
+    setCardNumber(formatted.slice(0, 19)) // limit to 16 digits + 3 spaces
+
+    // Validate
+    if (value.length > 0 && value.length < 16) {
+      setErrors((prev) => ({ ...prev, cardNumber: "El número de tarjeta debe tener 16 dígitos" }))
+    } else {
+      setErrors((prev) => ({ ...prev, cardNumber: "" }))
+    }
+  }
+
+  const handleCardExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, "")
+
+    // Format as MM/YY
+    if (value.length <= 2) {
+      setCardExpiry(value)
+    } else {
+      setCardExpiry(`${value.slice(0, 2)}/${value.slice(2, 4)}`)
+    }
+
+    // Validate
+    if (value.length > 0 && value.length < 4) {
+      setErrors((prev) => ({ ...prev, cardExpiry: "Formato inválido (MM/YY)" }))
+    } else if (value.length >= 2) {
+      const month = Number.parseInt(value.slice(0, 2))
+      if (month < 1 || month > 12) {
+        setErrors((prev) => ({ ...prev, cardExpiry: "Mes inválido" }))
+      } else {
+        setErrors((prev) => ({ ...prev, cardExpiry: "" }))
+      }
+    } else {
+      setErrors((prev) => ({ ...prev, cardExpiry: "" }))
+    }
+  }
+
+  const handleCardCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, "")
+    setCardCvv(value.slice(0, 3))
+
+    // Validate
+    if (value.length > 0 && value.length < 3) {
+      setErrors((prev) => ({ ...prev, cardCvv: "El CVV debe tener 3 dígitos" }))
+    } else {
+      setErrors((prev) => ({ ...prev, cardCvv: "" }))
+    }
+  }
+
+  const validateForm = () => {
+    const newErrors = {
+      cardNumber: "",
+      cardName: "",
+      cardExpiry: "",
+      cardCvv: "",
+    }
+
+    let isValid = true
+
+    // Only validate card details if card payment is selected
+    if (cardNumber.replace(/\s/g, "").length !== 16) {
+      newErrors.cardNumber = "El número de tarjeta debe tener 16 dígitos"
+      isValid = false
+    }
+
+    if (!cardName.trim()) {
+      newErrors.cardName = "Ingrese el nombre del titular"
+      isValid = false
+    }
+
+    if (cardExpiry.length < 5) {
+      newErrors.cardExpiry = "Ingrese una fecha válida (MM/YY)"
+      isValid = false
+    } else {
+      const [month, year] = cardExpiry.split("/")
+      const currentYear = new Date().getFullYear() % 100
+      const currentMonth = new Date().getMonth() + 1
+
+      if (
+        Number.parseInt(year) < currentYear ||
+        (Number.parseInt(year) === currentYear && Number.parseInt(month) < currentMonth)
+      ) {
+        newErrors.cardExpiry = "La tarjeta ha expirado"
+        isValid = false
+      }
+    }
+
+    if (cardCvv.length !== 3) {
+      newErrors.cardCvv = "El CVV debe tener 3 dígitos"
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
 
   const handleCheckout = () => {
+    if (!validateForm()) {
+      toast({
+        title: "Error en el formulario",
+        description: "Por favor, complete correctamente todos los campos de pago",
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsCheckingOut(true)
 
     // Simulate checkout process
     setTimeout(() => {
+      const paymentText = "Pago con tarjeta procesado correctamente"
+
       toast({
         title: "¡Pedido completado!",
-        description: `Su pedido estará listo para recoger en ${
+        description: `${paymentText}. Su pedido estará listo para recoger en ${
           pickupLocation === "lima" ? "Lima" : "San Rafael"
         } ${pickupDate === "today" ? "hoy" : "mañana"} a las ${pickupTime}.`,
       })
@@ -252,6 +379,115 @@ export default function CartContent() {
                   </Select>
                 </div>
               </div>
+            </div>
+
+            <div>
+              <h3 className="font-medium mb-2 flex items-center gap-2">
+                <CreditCard className="h-4 w-4" /> Método de pago
+              </h3>
+
+              <Tabs defaultValue="card" className="w-full">
+                <TabsList className="grid w-full grid-cols-1">
+                  <TabsTrigger value="card" className="flex items-center gap-1">
+                    <CreditCard className="h-4 w-4" /> Tarjeta de Crédito/Débito
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="card" className="space-y-3 mt-3">
+                  <div>
+                    <Label htmlFor="card-number" className="text-sm">
+                      Número de tarjeta
+                    </Label>
+                    <Input
+                      id="card-number"
+                      placeholder="0000 0000 0000 0000"
+                      value={cardNumber}
+                      onChange={handleCardNumberChange}
+                      className={cn(errors.cardNumber && "border-red-500")}
+                    />
+                    {errors.cardNumber && <p className="text-xs text-red-500 mt-1">{errors.cardNumber}</p>}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="card-name" className="text-sm">
+                      Nombre del titular
+                    </Label>
+                    <Input
+                      id="card-name"
+                      placeholder="Como aparece en la tarjeta"
+                      value={cardName}
+                      onChange={(e) => {
+                        setCardName(e.target.value)
+                        if (!e.target.value.trim()) {
+                          setErrors((prev) => ({ ...prev, cardName: "Ingrese el nombre del titular" }))
+                        } else {
+                          setErrors((prev) => ({ ...prev, cardName: "" }))
+                        }
+                      }}
+                      className={cn(errors.cardName && "border-red-500")}
+                    />
+                    {errors.cardName && <p className="text-xs text-red-500 mt-1">{errors.cardName}</p>}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label htmlFor="card-expiry" className="text-sm">
+                        Fecha de expiración
+                      </Label>
+                      <Input
+                        id="card-expiry"
+                        placeholder="MM/YY"
+                        value={cardExpiry}
+                        onChange={handleCardExpiryChange}
+                        className={cn(errors.cardExpiry && "border-red-500")}
+                      />
+                      {errors.cardExpiry && <p className="text-xs text-red-500 mt-1">{errors.cardExpiry}</p>}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="card-cvv" className="text-sm">
+                        CVV
+                      </Label>
+                      <Input
+                        id="card-cvv"
+                        placeholder="123"
+                        type="password"
+                        value={cardCvv}
+                        onChange={handleCardCvvChange}
+                        className={cn(errors.cardCvv && "border-red-500")}
+                      />
+                      {errors.cardCvv && <p className="text-xs text-red-500 mt-1">{errors.cardCvv}</p>}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="flex gap-1">
+                      <Image
+                        src="/placeholder.svg?height=24&width=36"
+                        alt="Visa"
+                        width={36}
+                        height={24}
+                        className="rounded"
+                      />
+                      <Image
+                        src="/placeholder.svg?height=24&width=36"
+                        alt="Mastercard"
+                        width={36}
+                        height={24}
+                        className="rounded"
+                      />
+                      <Image
+                        src="/placeholder.svg?height=24&width=36"
+                        alt="American Express"
+                        width={36}
+                        height={24}
+                        className="rounded"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500">Pago seguro y encriptado</p>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
 
