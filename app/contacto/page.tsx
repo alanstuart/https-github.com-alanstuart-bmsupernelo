@@ -1,6 +1,6 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { MapPin, Phone, Mail, Clock, Facebook } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, Facebook, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -44,6 +44,21 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start gap-3">
+                <MessageCircle className="h-5 w-5 text-green-600 mt-0.5" />
+                <div>
+                  <h3 className="font-medium">WhatsApp</h3>
+                  <Link
+                    href="https://wa.me/50661914588"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-green-600 transition-colors"
+                  >
+                    +506 6191 4588
+                  </Link>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
                 <Mail className="h-5 w-5 text-red-600 mt-0.5" />
                 <div>
                   <h3 className="font-medium">Correo Electrónico</h3>
@@ -76,12 +91,20 @@ export default function ContactPage() {
                       Facebook: @bmsupernelo
                     </Link>
                     <Link
-                      href="https://www.instagram.com/bm_supernelo"
+                      href="https://www.instagram.com/bm_supernelo/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-red-600 transition-colors"
                     >
                       Instagram: @bm_supernelo
+                    </Link>
+                    <Link
+                      href="https://wa.me/50661914588"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-green-600 transition-colors"
+                    >
+                      WhatsApp: +506 6191 4588
                     </Link>
                   </div>
                 </div>
@@ -125,6 +148,19 @@ export default function ContactPage() {
 
               <Button className="bg-red-600 hover:bg-red-700">Enviar Mensaje</Button>
             </form>
+
+            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <h3 className="font-medium text-green-800 mb-2">¿Necesita respuesta rápida?</h3>
+              <p className="text-sm text-green-700 mb-3">
+                Para consultas urgentes o pedidos especiales, contáctenos directamente por WhatsApp
+              </p>
+              <Link href="https://wa.me/50661914588" target="_blank" rel="noopener noreferrer">
+                <Button className="bg-green-600 hover:bg-green-700 w-full">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Escribir por WhatsApp
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

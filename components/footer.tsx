@@ -1,4 +1,4 @@
-import { MapPin, Clock, Phone, Mail, Facebook, Instagram } from "lucide-react"
+import { MapPin, Clock, Phone, Mail, Facebook, Instagram, MessageCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -19,8 +19,11 @@ export default function Footer() {
               <Link href="https://www.facebook.com/bmsupernelo" target="_blank" rel="noopener noreferrer">
                 <Facebook className="h-5 w-5 text-gray-300 hover:text-white transition-colors" />
               </Link>
-              <Link href="https://www.instagram.com/bm_supernelo" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.instagram.com/bm_supernelo/" target="_blank" rel="noopener noreferrer">
                 <Instagram className="h-5 w-5 text-gray-300 hover:text-white transition-colors" />
+              </Link>
+              <Link href="https://wa.me/50661914588" target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="h-5 w-5 text-gray-300 hover:text-green-400 transition-colors" />
               </Link>
             </div>
           </div>
@@ -34,6 +37,17 @@ export default function Footer() {
             <div className="flex items-start gap-2 text-gray-300 text-sm mb-2">
               <Phone className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <span>6191-4588</span>
+            </div>
+            <div className="flex items-start gap-2 text-gray-300 text-sm mb-2">
+              <MessageCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+              <Link
+                href="https://wa.me/50661914588"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-green-400 transition-colors"
+              >
+                WhatsApp: +506 6191 4588
+              </Link>
             </div>
           </div>
 
