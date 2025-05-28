@@ -79,8 +79,13 @@ export default function MeatProductCard({ product }: MeatProductCardProps) {
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
-      <div className="relative h-48 bg-gray-100">
-        <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-contain p-4" />
+      <div className="relative h-48 bg-gray-100 overflow-hidden">
+        <Image
+          src={product.image || "/placeholder.svg"}
+          alt={product.name}
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-300"
+        />
         <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
           ₡{product.pricePerKg.toLocaleString()}/kg
         </div>
