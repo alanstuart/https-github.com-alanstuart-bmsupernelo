@@ -106,7 +106,7 @@ export default function MeatProductGrid() {
         id: 110,
         name: "Pezuña de cerdo",
         pricePerKg: 2500,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pezuna-cerdo.jpeg", // ✅ Real image added
         category: "Cerdo",
         description: "Pezuña de cerdo para sopa",
         minAmount: 500,
@@ -156,7 +156,7 @@ export default function MeatProductGrid() {
         id: 115,
         name: "Pollo en trocitos",
         pricePerKg: 4490,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pollo-en-trocitos.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Pollo en trocitos para guisos",
         minAmount: 500,
@@ -166,7 +166,7 @@ export default function MeatProductGrid() {
         id: 116,
         name: "Pollo arreglado",
         pricePerKg: 4490,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pollo-arreglado.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Pollo arreglado listo para cocinar",
         minAmount: 500,
@@ -186,7 +186,7 @@ export default function MeatProductGrid() {
         id: 118,
         name: "Pechuga deshuesada",
         pricePerKg: 4490,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pechuga-deshuesada.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Pechuga de pollo deshuesada",
         minAmount: 500,
@@ -196,7 +196,7 @@ export default function MeatProductGrid() {
         id: 119,
         name: "Pellejo",
         pricePerKg: 2500,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pellejo.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Pellejo de pollo",
         minAmount: 500,
@@ -206,7 +206,7 @@ export default function MeatProductGrid() {
         id: 120,
         name: "Pollo con hueso picado",
         pricePerKg: 1790,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pollo-con-hueso-picado.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Pollo con hueso picado",
         minAmount: 500,
@@ -216,7 +216,7 @@ export default function MeatProductGrid() {
         id: 121,
         name: "Muslo entero",
         pricePerKg: 1790,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/muslo-entero.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Muslo de pollo entero",
         minAmount: 500,
@@ -246,7 +246,7 @@ export default function MeatProductGrid() {
         id: 124,
         name: "Pechuga con hueso",
         pricePerKg: 3000,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/pechuga-con-hueso.jpeg", // ✅ Real image added
         category: "Pollo",
         description: "Pechuga de pollo con hueso",
         minAmount: 500,
@@ -256,7 +256,7 @@ export default function MeatProductGrid() {
         id: 125,
         name: "Salchicha de pollo y res",
         pricePerKg: 2450,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/salchichas-pollo-res.jpeg", // ✅ Real image added
         category: "Embutidos",
         description: "Salchicha de pollo y res",
         minAmount: 500,
@@ -266,7 +266,7 @@ export default function MeatProductGrid() {
         id: 126,
         name: "Posta de cerdo",
         pricePerKg: 3690,
-        image: "/placeholder.svg?height=200&width=200", // Still needs image
+        image: "/images/meat/posta-cerdo.jpeg", // ✅ Real image added
         category: "Cerdo",
         description: "Posta de cerdo",
         minAmount: 500,
@@ -428,7 +428,7 @@ export default function MeatProductGrid() {
         </TabsList>
       </Tabs>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProducts.map((product) => (
           <MeatProductCard key={product.id} product={product} />
         ))}
