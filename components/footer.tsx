@@ -1,5 +1,6 @@
 import { MapPin, Clock, Phone, Mail, Facebook, Instagram } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function Footer() {
   return (
@@ -7,7 +8,12 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">BM Super Nelo</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="relative w-10 h-10">
+                <Image src="/images/bm-super-nelo-logo.png" alt="BM Super Nelo Logo" fill className="object-contain" />
+              </div>
+              <h3 className="text-lg font-semibold">BM Super Nelo</h3>
+            </div>
             <p className="text-gray-300 text-sm">Tu supermercado de confianza en Cartago</p>
             <div className="flex items-center gap-3 mt-4">
               <Link href="https://www.facebook.com/bmsupernelo" target="_blank" rel="noopener noreferrer">
